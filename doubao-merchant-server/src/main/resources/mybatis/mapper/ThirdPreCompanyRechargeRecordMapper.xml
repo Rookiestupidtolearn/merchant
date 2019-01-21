@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.doubao.merchant.server.recharge.dao.PreRechargeRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="order_third" property="orderThird" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="channel_pay" property="channelPay" jdbcType="VARCHAR" />
+    <result column="channel_third" property="channelThird" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+   
+  <sql id="Base_Column_List" >
+    id, app_id, order_no, order_third, amount, phone, channel_pay, channel_third, status, 
+    remark, create_time, update_time
+  </sql>
+  
+  <select id="getPreRechargeRecordByThirdOrder" resultMap="BaseResultMap" >
+ 		 select <include refid="Base_Column_List"/>
+   			from third_pre_company_recharge_record
+  			where
+  				order_third = #{thridOrder} and 
+  			    app_id = #{appId}
+  			    ORDER BY id DESC
+  			    limit 1 ;
+  </select>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecord" >
+    update third_pre_company_recharge_record
+    <set >
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderThird != null" >
+        order_third = #{orderThird,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="channelPay != null" >
+        channel_pay = #{channelPay,jdbcType=VARCHAR},
+      </if>
+      <if test="channelThird != null" >
+        channel_third = #{channelThird,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>  
+  
+  
+  
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from third_pre_company_recharge_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from third_pre_company_recharge_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from third_pre_company_recharge_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecordExample" >
+    delete from third_pre_company_recharge_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecord" >
+    insert into third_pre_company_recharge_record (id, app_id, order_no, 
+      order_third, amount, phone, 
+      channel_pay, channel_third, status, 
+      remark, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{appId,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+      #{orderThird,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{phone,jdbcType=VARCHAR}, 
+      #{channelPay,jdbcType=VARCHAR}, #{channelThird,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="savePreRechargeRecord" parameterType="com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecord" >
+    insert into third_pre_company_recharge_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="orderThird != null" >
+        order_third,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="channelPay != null" >
+        channel_pay,
+      </if>
+      <if test="channelThird != null" >
+        channel_third,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderThird != null" >
+        #{orderThird,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="channelPay != null" >
+        #{channelPay,jdbcType=VARCHAR},
+      </if>
+      <if test="channelThird != null" >
+        #{channelThird,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecordExample" resultType="java.lang.Integer" >
+    select count(*) from third_pre_company_recharge_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update third_pre_company_recharge_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.appId != null" >
+        app_id = #{record.appId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNo != null" >
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderThird != null" >
+        order_third = #{record.orderThird,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelPay != null" >
+        channel_pay = #{record.channelPay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelThird != null" >
+        channel_third = #{record.channelThird,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update third_pre_company_recharge_record
+    set id = #{record.id,jdbcType=INTEGER},
+      app_id = #{record.appId,jdbcType=VARCHAR},
+      order_no = #{record.orderNo,jdbcType=VARCHAR},
+      order_third = #{record.orderThird,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      channel_pay = #{record.channelPay,jdbcType=VARCHAR},
+      channel_third = #{record.channelThird,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=CHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+
+  
+  <update id="updateByPrimaryKey" parameterType="com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecord" >
+    update third_pre_company_recharge_record
+    set app_id = #{appId,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      order_third = #{orderThird,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      phone = #{phone,jdbcType=VARCHAR},
+      channel_pay = #{channelPay,jdbcType=VARCHAR},
+      channel_third = #{channelThird,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getByOrderNo" resultMap="BaseResultMap" parameterType="string">
+    select <include refid="Base_Column_List"/>
+    from  third_pre_company_recharge_record
+    where order_no = #{orderNo} limit 1
+  </select>
+
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.doubao.merchant.server.recharge.dao.QzRechargeRecordMapper">
+
+    <resultMap type="com.doubao.merchant.api.recharge.entity.QzRechargeRecordEntity" id="qzRechargeRecordMap">
+        <result property="id" column="id"/>
+        <result property="shopUserId" column="shop_user_id"/>
+        <result property="mobile" column="mobile"/>
+        <result property="state" column="state"/>
+        <result property="operateId" column="operate_id"/>
+        <result property="operateTime" column="operate_time"/>
+        <result property="amount" column="amount"/>
+        <result property="memo" column="memo"/>
+        <result property="tradeNo" column="trade_no"/>
+        <result property="rechargeType" column="recharge_type"/>
+        <result property="auditId" column="audit_id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="queryObject" resultType="com.doubao.merchant.api.recharge.entity.QzRechargeRecordEntity">
+        select
+            `id`,
+            `shop_user_id`,
+            `mobile`,
+            `state`,
+            `operate_id`,
+            `operate_time`,
+            `amount`,
+            `memo`,
+            `trade_no`,
+            `recharge_type`,
+            `audit_id`,
+            `update_time`,
+            `create_time`
+        from qz_recharge_record
+        where id = #{id}
+    </select>
+
+    <select id="queryList" resultType="com.doubao.merchant.api.recharge.entity.QzRechargeRecordEntity">
+        select
+        `id`,
+        `shop_user_id`,
+        `mobile`,
+        `state`,
+        `operate_id`,
+        `operate_time`,
+        `amount`,
+        `memo`,
+        `trade_no`,
+        `recharge_type`,
+        `audit_id`,
+        `update_time`,
+        `create_time`
+        from qz_recharge_record
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from qz_recharge_record
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="saveQzRechargeRecord" parameterType="com.doubao.merchant.api.recharge.entity.QzRechargeRecordEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into qz_recharge_record(
+            `shop_user_id`,
+            `mobile`,
+            `state`,
+            `operate_id`,
+            `operate_time`,
+            `amount`,
+            `memo`,
+            `trade_no`,
+            `recharge_type`,
+            `audit_id`,
+            `update_time`,
+            `create_time`)
+        values(
+                  #{shopUserId},
+                  #{mobile},
+                  #{state},
+                  #{operateId},
+                  #{operateTime},
+                  #{amount},
+                  #{memo},
+                  #{tradeNo},
+                  #{rechargeType},
+                  #{auditId},
+                  #{updateTime},
+                  #{createTime})
+    </insert>
+
+    <update id="update" parameterType="com.doubao.merchant.api.recharge.entity.QzRechargeRecordEntity">
+        update qz_recharge_record
+        <set>
+            <if test="shopUserId != null">`shop_user_id` = #{shopUserId}, </if>
+            <if test="mobile != null">`mobile` = #{mobile}, </if>
+            <if test="state != null">`state` = #{state}, </if>
+            <if test="operateId != null">`operate_id` = #{operateId}, </if>
+            <if test="operateTime != null">`operate_time` = #{operateTime}, </if>
+            <if test="amount != null">`amount` = #{amount}, </if>
+            <if test="memo != null">`memo` = #{memo}, </if>
+            <if test="tradeNo != null">`trade_no` = #{tradeNo}, </if>
+            <if test="rechargeType != null">`recharge_type` = #{rechargeType}, </if>
+            <if test="auditId != null">`audit_id` = #{auditId}, </if>
+            <if test="updateTime != null">`update_time` = #{updateTime}, </if>
+            <if test="createTime != null">`create_time` = #{createTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from qz_recharge_record where id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from qz_recharge_record where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.doubao.merchant.server.recharge.dao.ThirdMerchantRechargeRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.doubao.merchant.api.recharge.entity.ThirdMerchantRechargeRecord" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="data" property="data" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="mark" property="mark" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="send_num" property="sendNum" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, app_id, order_no, create_time, data, status, mark, update_time,send_num
+  </sql>
+
+  <insert id="insert" parameterType="com.doubao.merchant.api.recharge.entity.ThirdMerchantRechargeRecord" >
+    insert into third_merchant_recharge_record (id, app_id, order_no,
+      create_time, data, status,
+      mark, update_time,send_num)
+    values (#{id,jdbcType=BIGINT}, #{appId,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{data,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+      #{mark,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},#{sendNum,jdbcType=INTEGER})
+  </insert>
+
+  <insert id="saveThirdMerchantRechargeRecord" parameterType="com.doubao.merchant.api.recharge.entity.ThirdMerchantRechargeRecord" >
+    insert into third_merchant_recharge_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="data != null" >
+        data,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="mark != null" >
+        mark,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="sendNum != null" >
+        send_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="data != null" >
+        #{data,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null" >
+        #{mark,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendNum != null" >
+        #{sendNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByOrderNo" parameterType="com.doubao.merchant.api.recharge.entity.ThirdMerchantRechargeRecord" >
+    update third_merchant_recharge_record
+    <set >
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="data != null" >
+        data = #{data,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null" >
+        mark = #{mark,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="sendNum != null" >
+        send_num = #{sendNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where  order_no = #{orderNo}
+  </update>
+  
+  <select id="selectByOrderNo" parameterType="com.doubao.merchant.api.recharge.entity.ThirdMerchantRechargeRecord"   resultMap="BaseResultMap">
+  
+  	select  
+  	<include refid="Base_Column_List"></include> 
+  	from third_merchant_recharge_record 
+	where   order_no = #{orderNo}	
+  </select>
+</mapper>
