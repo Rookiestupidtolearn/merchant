@@ -6,6 +6,8 @@ import com.doubao.merchant.api.recharge.entity.ThridCompany;
 
 import feign.Param;
 
+import java.util.List;
+
 /** 
  * @ClassName: ThirdCompanyMapper 
  * @Description: 
@@ -20,4 +22,7 @@ public interface ThirdCompanyMapper {
 
 	int updateByPrimaryKeySelective(ThridCompany thridCompany);
 
+	List<ThridCompany> findList();
+
+	void insert(ThridCompany thridCompany);
 }

@@ -12,6 +12,7 @@ import com.doubao.merchant.server.thirdcompany.service.dao.ThirdCompanyMapper;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -99,6 +100,27 @@ public class ThirdCompanyServiceImpl implements ThirdCompanyService{
 		reMap.put("publicKey", publicKey);
 		reMap.put("privateKey", privateKey);
 		return reMap;
+	}
+	@Override
+	public List<ThridCompany> getList() {
+		return thirdCompanyMapper.findList();
+	}
+
+	@Override
+	public void update(ThridCompany thridCompany) {
+
+		thirdCompanyMapper.updateByPrimaryKeySelective(thridCompany);
+	}
+
+	@Override
+	public void insert(ThridCompany thridCompany) {
+		thridCompany.setCreateDate(new Date());
+		thridCompany.setUpdateDate(new Date());
+		thridCompany.setStatus("1");
+		thirdCompanyMapper.insert(thridCompany);
+		if (thridCompany.getPrivateKey() == null || thridCompany.getPublicKey() == null) {
+			genKeyPair(thridCompany.getAppid());
+		}
 	}
 
 }

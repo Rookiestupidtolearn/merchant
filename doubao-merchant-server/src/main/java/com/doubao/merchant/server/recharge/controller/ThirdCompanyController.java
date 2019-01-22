@@ -1,11 +1,14 @@
 package com.doubao.merchant.server.recharge.controller;
 
 
+import com.doubao.merchant.api.recharge.entity.ThridCompany;
 import com.doubao.merchant.server.thirdcompany.service.ThirdCompanyService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -14,6 +17,8 @@ public class ThirdCompanyController {
 
     @Autowired
     private ThirdCompanyService thirdCompanyService;
+
+
 
 
     @PutMapping("/{appId}/keyPair")
@@ -38,6 +43,26 @@ public class ThirdCompanyController {
 
 
 
+    @GetMapping("/query")
+    public Map<String,Object> getList(){
+        Map<String, Object> res = new HashMap<>();
+        res.put("data", thirdCompanyService.getList());
+        return res;
+    }
 
+    @PostMapping("/create")
+    public Map<String,Object>create(@RequestBody ThridCompany thridCompany ){
+        Map<String, Object> res = new HashMap<>();
+        ThridCompany old =  thirdCompanyService.getThridCompanyByAppId(thridCompany.getAppid());
+        if (null!= old){
+            thridCompany.setId(old.getId());
+            thridCompany.setUpdateDate(new Date());
+            thirdCompanyService.update(thridCompany);
+        }else {
+            thirdCompanyService.insert(thridCompany);
+        }
+        res.put("success", true);
+        return res;
+    }
 
 }

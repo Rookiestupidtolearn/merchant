@@ -1,0 +1,57 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户管理</title>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script src="/js/thirdCompany.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <h3 class="text-center">
+                斗宝用户配置
+            </h3>
+            <table class="table" id="tbody-result">
+                <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        app_id
+                    </th>
+                    <th>
+                        公钥
+                    </th>
+                    <th>
+                        私钥
+                    </th>
+                    <th>
+                        是否启用
+                    </th>
+                    <th>
+                        商户名
+                    </th>
+                    <th>
+                        回调地址
+                    </th>
+                    <th>
+                        创建时间
+                    </th>
+                    <th>
+                        修改时间
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="table_body">
+                </tbody>
+            </table>
+            <button class="btn" type="button" id="btSearch">点击查看</button>
+                <button class="btn btn-inverse" type="button" id="create" onclick=window.open("http://117.50.60.55:8020/thirdCompany_create.html")>新建</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

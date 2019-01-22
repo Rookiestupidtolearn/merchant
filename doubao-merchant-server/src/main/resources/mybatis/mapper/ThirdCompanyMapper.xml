@@ -141,6 +141,9 @@
     where appId = #{appId} limit 1 ;
   </select>
 
-
+  <select id="findList" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List"/>
+    from thrid_company
+  </select>
   
 </mapper>
