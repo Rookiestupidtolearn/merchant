@@ -283,6 +283,8 @@ public class RechargeController {
                 nideshopUser.setUsername("");
 				nideshopUser.setMobile(reRechargeRecord.getPhone());
 				nideshopUser.setRegisterTime(new Date());
+				nideshopUser.setThirdCompanyId(thridCompany.getId());
+
 				
 				//获取手机号在斗宝系统中的userId
 				TreeMap<String, Object> treeMap	= new TreeMap<String, Object>();

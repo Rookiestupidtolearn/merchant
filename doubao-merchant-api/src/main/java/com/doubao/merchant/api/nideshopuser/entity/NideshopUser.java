@@ -91,7 +91,12 @@ public class NideshopUser implements Serializable {
      * 
      */
     private String douBaoUserId;
-    
+    /**
+     * 商户id
+     */
+    private Integer thirdCompanyId;
+
+
 
     public Integer getId() {
         return id;
@@ -226,5 +231,12 @@ public class NideshopUser implements Serializable {
 	public void setDouBaoUserId(String douBaoUserId) {
 		this.douBaoUserId = douBaoUserId;
 	}
- 
+
+    public Integer getThirdCompanyId() {
+        return thirdCompanyId;
+    }
+
+    public void setThirdCompanyId(Integer thirdCompanyId) {
+        this.thirdCompanyId = thirdCompanyId;
+    }
 }

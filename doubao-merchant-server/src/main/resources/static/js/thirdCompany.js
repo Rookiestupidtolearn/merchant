@@ -7,7 +7,7 @@ $(function () {
             type: "get",
             dataType: "json",
             contentType: "application/json;charset=utf-8",
-            url: "http://117.50.60.55:8020/thirdCompany/query",
+            url: "../thirdCompany/query",
             success: function (msg) {
                     var str = "";
                     var data = msg.data;
@@ -45,7 +45,7 @@ $(function () {
             type: "post",
             dataType: "json",
             contentType: "application/json;charset=utf-8",
-            url: "http://117.50.60.55:8020/thirdCompany/create",
+            url: "../thirdCompany/create",
             data:JSON.stringify({"appid": appid, "name": inputName, "callBackUrl": callBackUrl}),
             success: function (msg) {
                 alert("成功")

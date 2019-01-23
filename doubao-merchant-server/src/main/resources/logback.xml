@@ -126,8 +126,8 @@
     </appender>
 
     <logger name="org.springframework" level="INFO" />
-    <logger name="jdbc.sqlonly" level="OFF" />
-	<!-- <logger name="jdbc.sqltiming" level="INFO" /> -->
+    <logger name="jdbc.sqlonly" level="INFO" />
+	 <logger name="jdbc.sqltiming" level="INFO" />
 	<logger name="jdbc.sqltiming" level="INFO" />
 	<logger name="jdbc.audit" level="OFF" />
 	<logger name="jdbc.resultset" level="OFF" />
