@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public  interface YeeTradeOrderRepository extends JpaRepository<YeeTradeOrderEntity,Integer> {
 
-    List< YeeTradeOrderEntity> findYeeTradeOrderEntitiesByYborderid(String orderNo);
+    List< YeeTradeOrderEntity> findYeeTradeOrderEntitiesByYeeOrderNo(String orderNo);
 
 
 

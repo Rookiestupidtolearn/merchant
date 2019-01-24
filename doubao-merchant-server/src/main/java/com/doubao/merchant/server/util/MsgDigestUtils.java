@@ -16,12 +16,12 @@ import java.security.spec.X509EncodedKeySpec;
 public class MsgDigestUtils {
 
 	private final static Logger logger = Logger.getLogger(MsgDigestUtils.class);
-	
-	public static PrivateKey privateKey;
+
+	//public static PrivateKey privateKey = null;
 	/**
 	 * 公钥，
 	 */
-	public static PublicKey publicKey;
+	//public static PublicKey publicKey = null;
 
 	static {
 		try {
@@ -37,28 +37,31 @@ public class MsgDigestUtils {
 	 *初始化私钥  by 私钥Str
 	 * @param privateBase64edKey
 	 */
-	public static void initPrivateKeyByKeyString(String privateBase64edKey) {
+	public  static PrivateKey initPrivateKeyByKeyString(String privateBase64edKey) {
+
 		try {
-			if (privateKey == null) {
-				privateKey = getPrivateKeyStr(privateBase64edKey);
-			}
+
+			return getPrivateKeyStr(privateBase64edKey);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	/**
 	 * 初始化公钥  by 公钥Str
 	 * @param publicBase64edKey
 	 */
-	public static void initPublicKeyByKeyString(String  publicBase64edKey) {
+	public  static PublicKey initPublicKeyByKeyString(String  publicBase64edKey) {
+
+
 		try {
-			if (publicKey == null) {
-				publicKey = getPublicKeyByStr(publicBase64edKey);
-			}
+			return getPublicKeyByStr(publicBase64edKey);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+             return null;
 	}
 	
 	
@@ -69,13 +72,13 @@ public class MsgDigestUtils {
 	 * @param inputStr
 	 * @return @
 	 */
-	public static String sign(String inputStr,String privateBase64edKey ) {
+	public  static String sign(String inputStr,String privateBase64edKey ) {
 		String result = null;
 		try {
-			if (privateKey == null) {
+
 				// 初始化
-				initPrivateKeyByKeyString(privateBase64edKey);
-			}
+				PrivateKey privateKey=initPrivateKeyByKeyString(privateBase64edKey);
+
 			byte[] tByte;
 			Signature signature = Signature.getInstance("SHA1withRSA", "BC");
 			signature.initSign(privateKey);
@@ -97,15 +100,15 @@ public class MsgDigestUtils {
 	 *            返回数据签名
 	 * @return
 	 */
-	public static boolean verifySign(String src, String signValue,String publicBase64edKey ) {
+	public static boolean  verifySign(String src, String signValue,String publicBase64edKey ) {
 		boolean bool = false;
 		try {
 			if (StringUtils.isBlank(src) || StringUtils.isBlank(signValue)) {
 				return false;
 			}
-			if (publicKey == null) {
-				initPublicKeyByKeyString(publicBase64edKey);
-			}
+
+			PublicKey publicKey=initPublicKeyByKeyString(publicBase64edKey);
+
 			Signature signature = Signature.getInstance("SHA1withRSA", "BC");
 			signature.initVerify(publicKey);
 			signature.update(src.getBytes("UTF-8"));
@@ -117,7 +120,7 @@ public class MsgDigestUtils {
 	}
 
 	
-	private static PublicKey getPublicKeyByStr(String publicBase64edKey) {
+	private  static PublicKey getPublicKeyByStr(String publicBase64edKey) {
 		
 		KeyFactory kf;
 		PublicKey publickey = null;
@@ -131,7 +134,7 @@ public class MsgDigestUtils {
 		return publickey;
 	}
 	
-	private static PrivateKey getPrivateKeyStr(String privateBase64edKey) {
+	private  static PrivateKey getPrivateKeyStr(String privateBase64edKey) {
 		
 		KeyFactory kf;
 		
@@ -148,7 +151,7 @@ public class MsgDigestUtils {
 	
 	
 
-	public static String readFile(String fileName) {
+	public  String readFile(String fileName) {
 		try {
 
 			logger.info(MsgDigestUtils.class.getResource("/").getPath() + "prkey.key");

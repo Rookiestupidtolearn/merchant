@@ -132,7 +132,7 @@ public class RechargeController {
 									   HttpServletRequest request, HttpServletResponse response) {
 
 		LOGGER.info("【签名】入参:" + reRechargeRecord.toString());
-
+	
 		Map<String, Object> preFieldValidation = FieldValidation.preFieldValidation(reRechargeRecord, "1");
 		if(ReturnResult.FAIL.equals(preFieldValidation.get("msg"))){
 			return preFieldValidation;
@@ -166,7 +166,7 @@ public class RechargeController {
 									  HttpServletResponse response) {
 
 		LOGGER.info("【支付签名】入参:" + requestRecharge.toString());
-
+	
 		Map<String, Object> reFieldValidation = FieldValidation.reFieldValidation(requestRecharge, "1");
 		if(ReturnResult.FAIL.equals(reFieldValidation.get("msg"))){
 			return reFieldValidation;
@@ -201,14 +201,14 @@ public class RechargeController {
 			HttpServletRequest request, HttpServletResponse response) {
 
 		LOGGER.info("【预充值】入参:" + reRechargeRecord.toString());
-
+	
 		Map<String, Object> preFieldValidation = FieldValidation.preFieldValidation(reRechargeRecord, "2");
 		if(ReturnResult.FAIL.equals(preFieldValidation.get("msg"))){
 			return preFieldValidation;
 		}
 		
 		ThridCompany thridCompany = thridCompanyService.getThridCompanyByAppId(reRechargeRecord.getAppId());
-
+		LOGGER.info("传入签名为=="+reRechargeRecord.getSignature()+"公钥为==="+thridCompany.getPublicKey()+"要签名的数据为=="+reRechargeRecord.regSignVal());
 		if (null == thridCompany) {
 			return ReturnUtil.returnAny(ReturnResult.FAIL, "100020", "商户无权限");
 		}
@@ -219,6 +219,7 @@ public class RechargeController {
 
 		if (!MsgDigestUtils.verifySign(reRechargeRecord.regSignVal(), reRechargeRecord.getSignature(),
 				thridCompany.getPublicKey())) {
+			LOGGER.info("验签失败传入签名为=="+reRechargeRecord.getSignature()+"公钥为==="+thridCompany.getPublicKey()+"要签名的数据为=="+reRechargeRecord.regSignVal());
 			return ReturnUtil.returnAny(ReturnResult.FAIL, "100022", "验签失败");
 		}
 
@@ -358,7 +359,8 @@ public class RechargeController {
 	@ResponseBody
 	public Map<String, Object> recharge(@Valid @RequestBody RequestRechargeEntity requestRecharge, HttpServletRequest request,
 			HttpServletResponse response) {
-		LOGGER.info("充值】入参:" + requestRecharge.toString());		
+		LOGGER.info("充值】入参:" + requestRecharge.toString());
+	
 		Map<String, Object> reFieldValidation = FieldValidation.reFieldValidation(requestRecharge, "2");
 		if(ReturnResult.FAIL.equals(reFieldValidation.get("msg"))){
 			return reFieldValidation;
@@ -508,7 +510,8 @@ public class RechargeController {
 	@ResponseBody
 	public Map<String, Object> queryOrder(@Valid @RequestBody RequestRechargeEntity requestRecharge, HttpServletRequest request,
 			HttpServletResponse response) {
-		LOGGER.info("订单查询入参:" + requestRecharge.toString());		
+		LOGGER.info("订单查询入参:" + requestRecharge.toString());	
+	
 		Map<String, Object> reFieldValidation = FieldValidation.reFieldValidation(requestRecharge, "2");
 		if(ReturnResult.FAIL_CODE.equals(reFieldValidation.get("code"))){
 			return reFieldValidation;
@@ -524,7 +527,7 @@ public class RechargeController {
 			return ReturnUtil.returnAny(ReturnResult.FAIL, "100021", "商户信息未配置");
 		}
 
-		if (!MsgDigestUtils.verifySign(requestRecharge.regSignVal(), requestRecharge.getSignature(),thridCompany.getPublicKey())) {			
+		if (!MsgDigestUtils.verifySign(requestRecharge.regSignVal(), requestRecharge.getSignature(),thridCompany.getPublicKey())) {
 			return ReturnUtil.returnAny(ReturnResult.FAIL, "100022", "验签失败");
 		}
 
@@ -638,6 +641,7 @@ public class RechargeController {
 	 * @throws Exception 
 	 */
 	private void callbackMerchants(TreeMap<String, String> dataMap,Map<String, Object> returnAny,String appId, ThirdPreCompanyRechargeRecord preRecord) {
+	
 		String orderNo = dataMap.get("orderid");
 		try {
 			if(StringUtils.isEmpty(appId)){
@@ -802,7 +806,8 @@ public class RechargeController {
 	private void yeeTradeOrder(ThirdPreCompanyRechargeRecord preRecord,TreeMap<String, String> dataMap){		
 		try {
 			LOGGER.info("明文数据：" + dataMap);
-			YeeTradeOrderEntityDTO entity = doubaoPayClient.query(dataMap.get("yborderid"));
+//			/YeeTradeOrderEntityDTO entity = doubaoPayClient.query(dataMap.get("yborderid"));
+			YeeTradeOrderEntityDTO entity = doubaoPayClient.query(preRecord.getOrderNo());
 			if(entity != null){
 				if (entity.getPayStatus() == 1) {
 					// 无需再次回调

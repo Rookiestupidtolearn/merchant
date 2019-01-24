@@ -20,7 +20,7 @@ public class YeeTradeOrderService {
     }
 
     public YeeTradeOrderEntityDTO query(String orderNo){
-        List<YeeTradeOrderEntity> byYeeOrderNos = yeeTradeOrderRepository.findYeeTradeOrderEntitiesByYborderid(orderNo);
+        List<YeeTradeOrderEntity> byYeeOrderNos = yeeTradeOrderRepository.findYeeTradeOrderEntitiesByYeeOrderNo(orderNo);
         if (byYeeOrderNos ==null || byYeeOrderNos.size() ==0){
             return null;
         }

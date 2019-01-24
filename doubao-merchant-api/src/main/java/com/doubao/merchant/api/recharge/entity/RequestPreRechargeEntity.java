@@ -114,4 +114,16 @@ public class RequestPreRechargeEntity implements Serializable{
 		this.phone = phone;
 	}
 
+	@Override
+	public String toString() {
+		return "RequestPreRechargeEntity{" +
+				"appId='" + appId + '\'' +
+				", phone='" + phone + '\'' +
+				", channelNo='" + channelNo + '\'' +
+				", requestId='" + requestId + '\'' +
+				", orderNo='" + orderNo + '\'' +
+				", amount=" + amount +
+				", signature='" + signature + '\'' +
+				'}';
+	}
 }
