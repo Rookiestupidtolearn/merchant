@@ -13,4 +13,6 @@ public  interface YeeTradeOrderRepository extends JpaRepository<YeeTradeOrderEnt
 
 
 
+
+
 }

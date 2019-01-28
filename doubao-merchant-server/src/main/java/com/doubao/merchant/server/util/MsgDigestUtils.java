@@ -102,12 +102,13 @@ public class MsgDigestUtils {
 	 */
 	public static boolean  verifySign(String src, String signValue,String publicBase64edKey ) {
 		boolean bool = false;
+		logger.info("验签开始");
 		try {
 			if (StringUtils.isBlank(src) || StringUtils.isBlank(signValue)) {
 				return false;
 			}
 
-			PublicKey publicKey=initPublicKeyByKeyString(publicBase64edKey);
+			PublicKey publicKey=initPublicKeyByKeyString(publicBase64edKey);//初始化公钥
 
 			Signature signature = Signature.getInstance("SHA1withRSA", "BC");
 			signature.initVerify(publicKey);

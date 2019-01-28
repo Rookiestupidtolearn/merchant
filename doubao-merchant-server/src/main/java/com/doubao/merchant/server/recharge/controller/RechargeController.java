@@ -295,7 +295,7 @@ public class RechargeController {
 		        String encrypt = EncryptUtil.aesEncrypt(content); 
 		        Map<String, String> paramMap = new HashMap<String, String>();
 	            paramMap.put("encrypt", encrypt);
-		        String sendHttpRequest = HttpClient4Utils.sendHttpRequest(doubaoCheckUserUrl, paramMap, "UTF-8", true);
+		        String sendHttpRequest = HttpClient4Utils.sendHttpRequest(doubaoCheckUserUrl, paramMap, "UTF-8", true);//调用斗宝校验用户接口
 		        JSONObject result = JSON.parseObject(sendHttpRequest);
 		        if ("success".equals(result.getString("code"))) {		        	
 		        	String douBaoUserId = result.getString("userId");

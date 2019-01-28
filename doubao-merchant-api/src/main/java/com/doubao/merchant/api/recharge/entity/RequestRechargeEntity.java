@@ -67,18 +67,14 @@ public class RequestRechargeEntity implements Serializable{
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
+
+	@Override
+	public String toString() {
+		return "RequestRechargeEntity{" +
+				"appId='" + appId + '\'' +
+				", orderNo='" + orderNo + '\'' +
+				", signature='" + signature + '\'' +
+				'}';
+	}
 }
