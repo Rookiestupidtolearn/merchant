@@ -97,7 +97,7 @@ public class FieldValidation {
 		            return ReturnUtil.returnAny(ReturnResult.FAIL, "100017", "金额必须为正整数");
 		    }
 			
-			if(!"1".equals(flag)){
+			if(!"1".equals(flag)){ //标志不为1时判断签名
 				if(StringUtils.isEmpty(reRechargeRecord.getSignature())){
 					//return ReturnUtil.returnFail("签名不能为空");
 					return ReturnUtil.returnAny(ReturnResult.FAIL, "100005", "签名不能为空");

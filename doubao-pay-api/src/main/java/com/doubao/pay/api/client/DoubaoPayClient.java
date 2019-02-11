@@ -28,7 +28,7 @@ public interface DoubaoPayClient {
     @GetMapping("/yeeTradeOrder/")
     YeeTradeOrderEntityDTO query(@RequestParam("orderNo") String orderNo);
 
-    //医保回调数据解析
+    //易保回调数据解析
     @GetMapping("/recharge/decrypt")
     TreeMap<String ,String > decrypt(@RequestParam("data")String data,
                                  @RequestParam("encryptkey") String encryptkey);

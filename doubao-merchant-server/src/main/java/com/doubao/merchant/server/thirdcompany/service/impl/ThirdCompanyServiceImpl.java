@@ -119,7 +119,7 @@ public class ThirdCompanyServiceImpl implements ThirdCompanyService{
 		thridCompany.setStatus("1");
 		thirdCompanyMapper.insert(thridCompany);
 		if (thridCompany.getPrivateKey() == null || thridCompany.getPublicKey() == null) {
-			genKeyPair(thridCompany.getAppid());
+			genKeyPair(thridCompany.getAppid());//生成公司钥
 		}
 	}
 

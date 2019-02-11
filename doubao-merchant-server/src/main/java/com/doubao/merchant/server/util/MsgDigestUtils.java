@@ -31,9 +31,9 @@ public class MsgDigestUtils {
 		}
 	}
 
-	
+
 	/**
-	 * 
+	 *
 	 *初始化私钥  by 私钥Str
 	 * @param privateBase64edKey
 	 */
@@ -48,7 +48,7 @@ public class MsgDigestUtils {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 初始化公钥  by 公钥Str
 	 * @param publicBase64edKey
@@ -61,14 +61,14 @@ public class MsgDigestUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-             return null;
+		return null;
 	}
-	
-	
+
+
 
 	/**
 	 * 对传入字符串进行签名
-	 * 
+	 *
 	 * @param inputStr
 	 * @return @
 	 */
@@ -76,8 +76,8 @@ public class MsgDigestUtils {
 		String result = null;
 		try {
 
-				// 初始化
-				PrivateKey privateKey=initPrivateKeyByKeyString(privateBase64edKey);
+			// 初始化
+			PrivateKey privateKey=initPrivateKeyByKeyString(privateBase64edKey);
 
 			byte[] tByte;
 			Signature signature = Signature.getInstance("SHA1withRSA", "BC");
@@ -93,7 +93,7 @@ public class MsgDigestUtils {
 
 	/**
 	 * 对返回的数据进行验签
-	 * 
+	 *
 	 * @param src
 	 *            返回数据明文
 	 * @param signValue
@@ -120,9 +120,9 @@ public class MsgDigestUtils {
 		return bool;
 	}
 
-	
+
 	private  static PublicKey getPublicKeyByStr(String publicBase64edKey) {
-		
+
 		KeyFactory kf;
 		PublicKey publickey = null;
 		try {
@@ -134,11 +134,11 @@ public class MsgDigestUtils {
 		}
 		return publickey;
 	}
-	
+
 	private  static PrivateKey getPrivateKeyStr(String privateBase64edKey) {
-		
+
 		KeyFactory kf;
-		
+
 		PrivateKey privateKey = null;
 		try {
 			kf = KeyFactory.getInstance("RSA", "BC");
@@ -149,8 +149,8 @@ public class MsgDigestUtils {
 		}
 		return privateKey;
 	}
-	
-	
+
+
 
 	public  String readFile(String fileName) {
 		try {
