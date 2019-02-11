@@ -133,12 +133,12 @@ public class RechargeController {
 
 		LOGGER.info("【签名】入参:" + reRechargeRecord.toString());
 	
-		Map<String, Object> preFieldValidation = FieldValidation.preFieldValidation(reRechargeRecord, "1");
+		Map<String, Object> preFieldValidation = FieldValidation.preFieldValidation(reRechargeRecord, "1");//字段验证
 		if(ReturnResult.FAIL.equals(preFieldValidation.get("msg"))){
 			return preFieldValidation;
 		}
 		
-		ThridCompany thridCompany = thridCompanyService.getThridCompanyByAppId(reRechargeRecord.getAppId());
+		ThridCompany thridCompany = thridCompanyService.getThridCompanyByAppId(reRechargeRecord.getAppId());//从数据库获取第三方信息
 
 		if (null == thridCompany) {
 			return ReturnUtil.returnAny(ReturnResult.FAIL, "100020", "商户无权限");
@@ -149,7 +149,7 @@ public class RechargeController {
 		}
 		
 		Map<String, Object> successMap = ReturnUtil.returnSuccess();
-		successMap.put("sign", MsgDigestUtils.sign(reRechargeRecord.regSignVal(),thridCompany.getPrivateKey()));
+		successMap.put("sign", MsgDigestUtils.sign(reRechargeRecord.regSignVal(),thridCompany.getPrivateKey()));//用第三方私钥生成签名数据并返回
 		return successMap;
 	}
 
@@ -202,7 +202,7 @@ public class RechargeController {
 
 		LOGGER.info("【预充值】入参:" + reRechargeRecord.toString());
 	
-		Map<String, Object> preFieldValidation = FieldValidation.preFieldValidation(reRechargeRecord, "2");
+		Map<String, Object> preFieldValidation = FieldValidation.preFieldValidation(reRechargeRecord, "2"); //字段and签名校验空
 		if(ReturnResult.FAIL.equals(preFieldValidation.get("msg"))){
 			return preFieldValidation;
 		}
@@ -218,12 +218,12 @@ public class RechargeController {
 		}
 
 		if (!MsgDigestUtils.verifySign(reRechargeRecord.regSignVal(), reRechargeRecord.getSignature(),
-				thridCompany.getPublicKey())) {
+				thridCompany.getPublicKey())) { //公钥验证签名
 			LOGGER.info("验签失败传入签名为=="+reRechargeRecord.getSignature()+"公钥为==="+thridCompany.getPublicKey()+"要签名的数据为=="+reRechargeRecord.regSignVal());
 			return ReturnUtil.returnAny(ReturnResult.FAIL, "100022", "验签失败");
 		}
 
-		//校验金额，必须为正整数
+		//校验金额，必须为正整数 FIXME
         try {
            int money = reRechargeRecord.getAmount().intValue();
            if (money <= 0 ) {
@@ -238,13 +238,13 @@ public class RechargeController {
 		Jedis jedis = redisPoolFactory.getResource();
 
 		String key = reRechargeRecord.getAppId() + "-" + reRechargeRecord.getOrderNo();
-		Boolean locked = RedisUtils.tryGetDistributedLock(jedis,key,Long.toString(requestId), 1000 * 120);
+		Boolean locked = RedisUtils.tryGetDistributedLock(jedis,key,Long.toString(requestId), 1000 * 120); //尝试获得分布式锁
 
 		if (!locked) {
 			return ReturnUtil.returnAny(ReturnResult.FAIL, "100030", "当前订单正在处理中");
 		}
 
-		//查询历史是否有支付单子
+		//查询历史是否有支付单子  '状态 0:预支付；1：支付中；2充值成功；3充值失败；4订单失效',
 		ThirdPreCompanyRechargeRecord oldThirdPreCompanyRechargeRecord = preRechargeRecordService.getPreRechargeRecordByThirdOrder(reRechargeRecord.getOrderNo(), reRechargeRecord.getAppId());
 		if (null != oldThirdPreCompanyRechargeRecord) {
 			Date updateTime = oldThirdPreCompanyRechargeRecord.getUpdateTime();
@@ -327,8 +327,8 @@ public class RechargeController {
 			thirdPreCompanyRechargeRecord.setCreateTime(new Date());
             thirdPreCompanyRechargeRecord.setUpdateTime(new Date());
 
-			if (preRechargeRecordService.savePreRechargeRecord(thirdPreCompanyRechargeRecord)) {
-				RedisUtils.releaseDistributedLock(jedis, key, Long.toString(requestId));
+			if (preRechargeRecordService.savePreRechargeRecord(thirdPreCompanyRechargeRecord)) { //创建预充值订单成功
+				RedisUtils.releaseDistributedLock(jedis, key, Long.toString(requestId)); //释放分布式锁
                 return ReturnUtil.returnSuccess();
 			} else {
 				RedisUtils.releaseDistributedLock(jedis, key, Long.toString(requestId));
@@ -385,19 +385,19 @@ public class RechargeController {
 		Jedis jedis = redisPoolFactory.getResource();
         //查询历史是否有预支付单子
         ThirdPreCompanyRechargeRecord oldThirdPreCompanyRechargeRecord = preRechargeRecordService.getPreRechargeRecordByThirdOrder(requestRecharge.getOrderNo(), requestRecharge.getAppId());
-        //状态0或3的单子 可以支付
+        //状态0或3的单子 可以支付 '状态 0:预支付；1：支付中；2充值成功；3充值失败；4订单失效',
         if (null != oldThirdPreCompanyRechargeRecord) {
             if ( RechargeStatus.PROCESS.equals(oldThirdPreCompanyRechargeRecord.getStatus())) {
             	Date updateTime = oldThirdPreCompanyRechargeRecord.getUpdateTime();
             	//是否失效
-            	if((new Date().getTime() - updateTime.getTime()) >= 1000 * 60 * 60 * 23.5){
+            	if((new Date().getTime() - updateTime.getTime()) >= 1000 * 60 * 60 * 23.5){ //依据最后订单的更新时间判读是否失效
             		oldThirdPreCompanyRechargeRecord.setStatus(RechargeStatus.INVALID);
             		oldThirdPreCompanyRechargeRecord.setRemark("订单失效");
             		oldThirdPreCompanyRechargeRecord.setUpdateTime(new Date());
 					preRechargeRecordService.updateByPrimaryKeySelective(oldThirdPreCompanyRechargeRecord);
             		return ReturnUtil.returnAny(ReturnResult.FAIL, "100031", "订单已经失效,请重新支付");
             	}else{
-            		YeeTradeOrderEntityDTO yee = doubaoPayClient.query(oldThirdPreCompanyRechargeRecord.getOrderNo());
+            		YeeTradeOrderEntityDTO yee = doubaoPayClient.query(oldThirdPreCompanyRechargeRecord.getOrderNo()); //查询数据库中易宝支付订单
                 	Map<String, Object> returnFail = ReturnUtil.returnAny(ReturnResult.SUCCESS, "100034", "当前订单正在处理中,请勿重复操作");
                 	String str = yee.getResponseMsg();
                 	str = str.trim();
@@ -542,7 +542,7 @@ public class RechargeController {
 		}	
 	}	
 	
-	//回调通知易宝
+	//易宝回调通知
 	@RequestMapping(value = "/yeePayRecharge",method = {RequestMethod.POST,RequestMethod.GET})
 	@ResponseBody
 	public String yeePayRecharge(String data, String encryptkey){
@@ -553,8 +553,13 @@ public class RechargeController {
 		}
 		return "ERROR";
 	}
-	
-	
+
+	/**
+	 * 易宝回调通知处理逻辑
+	 * @param data
+	 * @param encryptkey
+	 * @return
+	 */
 	private Map<String, Object> yeePayRechargeOperation(String data,String encryptkey){
 		LOGGER.info("易宝支付订单支付回调start");
 		String appId = "";
@@ -667,7 +672,7 @@ public class RechargeController {
             paramMap.put("orderNo", preRecord.getOrderThird());
             paramMap.put("amount", String.valueOf(preRecord.getAmount()) );
             paramMap.put("signature", MsgDigestUtils.sign(appId + "|" + preRecord.getOrderThird(), thridCompanyByAppId.getPrivateKey()));
-            paramMap.put("state", "10000".equals(returnAny.get("code"))?"2":"3");
+            paramMap.put("state", "10000".equals(returnAny.get("code"))?"2":"3"); //10000标志支付成功
 
 			ThirdMerchantRechargeRecord record = new ThirdMerchantRechargeRecord();
 			record.setAppId(appId);
@@ -877,7 +882,7 @@ public class RechargeController {
 			treeMap.put("amount", 			preRecord.getAmount());		
 			treeMap.put("thirdTradeNo", preRecord.getOrderNo());
 			treeMap.put("platformType", preRecord.getAppId());//平台类型
-			treeMap.put("queryCheckUrl", doubaoCardpaysynchinfoUrl);
+			treeMap.put("queryCheckUrl", doubaoCardpaysynchinfoUrl); //订单回调 校验订单地址
 			treeMap.put("cardType", 3);//平台类型				
 			JSONObject json =new JSONObject(treeMap);
 			String content = json.toString();
