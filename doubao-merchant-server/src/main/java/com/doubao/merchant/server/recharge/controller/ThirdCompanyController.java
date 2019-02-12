@@ -26,7 +26,11 @@ public class ThirdCompanyController {
         return thirdCompanyService.genKeyPair(appId);
     }
 
-
+    /**
+     * 根据appId查询公私钥
+     * @param appId
+     * @return
+     */
     @ApiOperation(value = "查询")
     @GetMapping("/keyPair")
     public Map<String,Object> getKeyPair(@RequestParam String appId){
@@ -34,6 +38,12 @@ public class ThirdCompanyController {
 
     }
 
+    /**
+     * 更新第三方回调url
+     * @param appId
+     * @param callBackUrl
+     * @return
+     */
     @PutMapping("/{appId}/callBackUrl")
     public Map<String,Object> updateCallBackUrl(@PathVariable(value = "appId")String appId,
                                                 @RequestBody String callBackUrl ){
@@ -41,8 +51,10 @@ public class ThirdCompanyController {
     }
 
 
-
-
+    /**
+     * 查询第三方信息
+     * @return
+     */
     @GetMapping("/query")
     public Map<String,Object> getList(){
         Map<String, Object> res = new HashMap<>();
@@ -50,6 +62,11 @@ public class ThirdCompanyController {
         return res;
     }
 
+    /**
+     * 创建第三方信息存在更新没有新建
+     * @param thridCompany
+     * @return
+     */
     @PostMapping("/create")
     public Map<String,Object>create(@RequestBody ThridCompany thridCompany ){
         Map<String, Object> res = new HashMap<>();

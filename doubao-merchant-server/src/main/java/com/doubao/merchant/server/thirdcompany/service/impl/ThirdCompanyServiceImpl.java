@@ -31,6 +31,11 @@ public class ThirdCompanyServiceImpl implements ThirdCompanyService{
 		return thirdCompanyMapper.getThridCompanyByAppId(appId);
 	}
 
+	/**
+	 * 生成公私钥
+	 * @param appId
+	 * @return
+	 */
 	@Override
 	public Map<String, Object> genKeyPair(String appId) {
 		ThridCompany thridCompany =getThridCompanyByAppId(appId);
@@ -116,7 +121,7 @@ public class ThirdCompanyServiceImpl implements ThirdCompanyService{
 	public void insert(ThridCompany thridCompany) {
 		thridCompany.setCreateDate(new Date());
 		thridCompany.setUpdateDate(new Date());
-		thridCompany.setStatus("1");
+		thridCompany.setStatus("1"); // 1可用
 		thirdCompanyMapper.insert(thridCompany);
 		if (thridCompany.getPrivateKey() == null || thridCompany.getPublicKey() == null) {
 			genKeyPair(thridCompany.getAppid());//生成公司钥
