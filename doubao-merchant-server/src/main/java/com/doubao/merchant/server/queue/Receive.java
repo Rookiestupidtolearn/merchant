@@ -1,6 +1,7 @@
 package com.doubao.merchant.server.queue;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,12 @@ public class Receive {
     			return;
     		}
     		
-    		ThridCompany thridCompanyByAppId = thridCompanyService.getThridCompanyByAppId(thirdMerchantRechargeRecord.getAppId());
+    		List<ThridCompany> companyList = thridCompanyService.getThridCompanyByAppId(thirdMerchantRechargeRecord.getAppId());
+    		if(null!=companyList || companyList.size()>1 ){
+				LOGGER.info("延时队列，商户异常：商户号为{}，不存在。",thirdMerchantRechargeRecord.getAppId());
+    			return;
+			}
+			ThridCompany thridCompanyByAppId=companyList.get(0);
 			String callBackUrl = thridCompanyByAppId.getCallBackUrl(); //回调地址
     		
     		String data = thirdMerchantRechargeRecord.getData();

@@ -2,7 +2,7 @@ package com.doubao.merchant.server.recharge.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+import java.util.List;
 import com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecord;
 
 
@@ -16,7 +16,7 @@ import com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecord;
 @Mapper
 public interface PreRechargeRecordMapper {
 	
-	ThirdPreCompanyRechargeRecord getPreRechargeRecordByThirdOrder(@Param("thridOrder")String thridOrder, @Param("appId") String appId);
+	List<ThirdPreCompanyRechargeRecord> getPreRechargeRecordByThirdOrder(@Param("thridOrder")String thridOrder, @Param("appId") String appId);
 	
 	Boolean updateByPrimaryKeySelective(ThirdPreCompanyRechargeRecord record);
 	

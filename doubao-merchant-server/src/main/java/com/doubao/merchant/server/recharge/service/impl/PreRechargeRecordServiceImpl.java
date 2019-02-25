@@ -2,7 +2,7 @@ package com.doubao.merchant.server.recharge.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecord;
 import com.doubao.merchant.server.recharge.dao.PreRechargeRecordMapper;
 import com.doubao.merchant.server.recharge.service.PreRechargeRecordService;
@@ -14,7 +14,7 @@ public class PreRechargeRecordServiceImpl implements PreRechargeRecordService {
 	private PreRechargeRecordMapper preRechargeRecordMapper;
 
 	@Override
-	public ThirdPreCompanyRechargeRecord getPreRechargeRecordByThirdOrder(
+	public List<ThirdPreCompanyRechargeRecord> getPreRechargeRecordByThirdOrder(
 			String thridOrder, String appId) {
 		return preRechargeRecordMapper.getPreRechargeRecordByThirdOrder(thridOrder,appId);
 	}

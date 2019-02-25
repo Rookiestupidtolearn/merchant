@@ -86,8 +86,8 @@
   			where
   				order_third = #{thridOrder} and 
   			    app_id = #{appId}
-  			    ORDER BY id DESC
-  			    limit 1 ;
+  			    ORDER BY id DESC limit 1
+
   </select>
   
   <update id="updateByPrimaryKeySelective" parameterType="com.doubao.merchant.api.recharge.entity.ThirdPreCompanyRechargeRecord" >

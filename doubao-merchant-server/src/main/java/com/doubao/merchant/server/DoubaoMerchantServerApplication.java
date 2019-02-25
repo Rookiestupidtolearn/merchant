@@ -28,6 +28,11 @@ public class DoubaoMerchantServerApplication {
 	public Queue delayQueue() {
 		return new ActiveMQQueue("doubaoMerchantDelayQueue");
 	}
+
+	@Bean
+	public Queue delayQueue1() {
+		return new ActiveMQQueue("23");
+	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(DoubaoMerchantServerApplication.class, args);

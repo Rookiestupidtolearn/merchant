@@ -18,7 +18,7 @@ import java.util.List;
 @Mapper
 public interface ThirdCompanyMapper {
 
-	ThridCompany getThridCompanyByAppId(@Param("appId") String appId);
+	List<ThridCompany> getThridCompanyByAppId(@Param("appId") String appId);
 
 	int updateByPrimaryKeySelective(ThridCompany thridCompany);
 

@@ -27,7 +27,7 @@ public class ThirdCompanyServiceImpl implements ThirdCompanyService{
 
 
 	@Override
-	public ThridCompany getThridCompanyByAppId(String appId) {
+	public List<ThridCompany> getThridCompanyByAppId(String appId) {
 		return thirdCompanyMapper.getThridCompanyByAppId(appId);
 	}
 
@@ -38,11 +38,16 @@ public class ThirdCompanyServiceImpl implements ThirdCompanyService{
 	 */
 	@Override
 	public Map<String, Object> genKeyPair(String appId) {
-		ThridCompany thridCompany =getThridCompanyByAppId(appId);
+		List<ThridCompany> list =getThridCompanyByAppId(appId);
 		Map<String, Object> resMap = new HashMap<>();
-		if (null == thridCompany){
+		if (null==list || list.size()==0){
 			LOGGER.info("没有 appId 为 {} 的 商户 ",appId );
 			resMap.put("msg", "没有该用户");
+			return resMap;
+		}
+		if(list.size()>1){
+			LOGGER.info("异常用户用户id{}",appId );
+			resMap.put("msg", "异常用户");
 			return resMap;
 		}
 		Map<String, String> keyPair = new HashMap<>();
@@ -53,6 +58,7 @@ public class ThirdCompanyServiceImpl implements ThirdCompanyService{
 			resMap.put("msg", "生成秘钥失败");
 			return resMap;
 		}
+		ThridCompany thridCompany=list.get(0);
 		String publicKey = keyPair.get("publicKey");
 		String privateKey = keyPair.get("privateKey");
 		thridCompany.setPrivateKey(privateKey);
@@ -70,13 +76,19 @@ public class ThirdCompanyServiceImpl implements ThirdCompanyService{
 
 	@Override
 	public Map<String, Object> updateCallBackUrl(String appId, String callBackUrl) {
-		ThridCompany thridCompany = getThridCompanyByAppId(appId);
+		List<ThridCompany> list= getThridCompanyByAppId(appId);
 		Map<String, Object> resMap = new HashMap<>();
-		if (null == thridCompany){
+		if (null==list || list.size()==0){
 			LOGGER.info("没有 appId 为 {} 的 商户 ",appId );
 			resMap.put("msg","没有该用户");
 			return resMap;
 		}
+		if(list.size()>1){
+			LOGGER.info("异常用户用户id{}",appId );
+			resMap.put("msg", "异常用户");
+			return resMap;
+		}
+		ThridCompany thridCompany=list.get(0);
 		thridCompany.setCallBackUrl(callBackUrl);
 		thridCompany.setUpdateDate(new Date());
 		int res = thirdCompanyMapper.updateByPrimaryKeySelective(thridCompany);
@@ -92,13 +104,19 @@ public class ThirdCompanyServiceImpl implements ThirdCompanyService{
 
 	@Override
 	public Map<String, Object> getKeyPair(String appId) {
-		ThridCompany thridCompany = getThridCompanyByAppId(appId);
+		List<ThridCompany> list = getThridCompanyByAppId(appId);
 		Map<String, Object> reMap = new HashMap<>();
-		if (null == thridCompany){
+		if (null==list || list.size()==0){
 			LOGGER.info("没有 appId 为 {} 的 商户 ",appId );
 			reMap.put("msg", "没有该用户");
 			return reMap;
 		}
+		if(list.size()>1){
+			LOGGER.info("异常用户用户id{}",appId );
+			reMap.put("msg", "异常用户");
+			return reMap;
+		}
+		ThridCompany thridCompany=list.get(0);
 		String publicKey = thridCompany.getPublicKey();
 		String privateKey = thridCompany.getPublicKey();
 

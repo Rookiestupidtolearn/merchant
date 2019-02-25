@@ -32,7 +32,7 @@ public class GenerateOrderNoUtil {
 	    }
 
 	    public static void main(String[] args) {
-	        System.out.println(gens("R",530L));
+//	        System.out.println(gens("R",530L));
 	        System.out.println(gen("R","530L"));
 	    }
 

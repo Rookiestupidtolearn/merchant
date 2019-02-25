@@ -25,7 +25,7 @@ public class Send {
     private JmsMessagingTemplate jmsMessagingTemplate;
 
     @Autowired
-    private Queue delayQueue;
+    private Queue delayQueue1;
 
     /**
      * 首先要在中间件MQ conf文件下的activeMQ.xml 中 的broker节点中  
@@ -46,7 +46,7 @@ public class Send {
             // 获取session，true开启事务，false关闭事务
             session = connection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);
             // 创建一个消息队列
-            producer = session.createProducer(this.delayQueue);
+            producer = session.createProducer(this.delayQueue1);
             producer.setDeliveryMode(JmsProperties.DeliveryMode.PERSISTENT.getValue());
             TextMessage message = session.createTextMessage(orderNo);
             //设置延迟时间

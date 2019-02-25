@@ -33,7 +33,10 @@ public class PreRechargeController {
     public boolean sign(@RequestParam("data")String data,
                         @RequestParam("encryptkey") String encryptkey){
         TreeMap<String, String> treeMap = paymobileUtils.decrypt(data, encryptkey);
-
+        if (null==treeMap){
+            LOGGER.info("预充值验签失败 treeMap为空传入的数据data为{}，encryptkey为{}",data,encryptkey);
+            return false;
+        }
         return paymobileUtils.checkSign(treeMap);
     }
 

@@ -1,13 +1,14 @@
 package com.doubao.merchant.server.thirdcompany.service;
 
 import com.doubao.merchant.api.recharge.entity.ThridCompany;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ThirdCompanyService {
 	
-	ThridCompany getThridCompanyByAppId(String appId);
+	List<ThridCompany> getThridCompanyByAppId(String appId);
 
 	Map<String,Object> genKeyPair(String appId);
 

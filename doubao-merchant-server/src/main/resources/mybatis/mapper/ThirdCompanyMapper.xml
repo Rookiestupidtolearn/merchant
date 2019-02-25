@@ -138,7 +138,7 @@
   <select id="getThridCompanyByAppId" parameterType="string" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from thrid_company
-    where appId = #{appId} limit 1 ;
+    where appId = #{appId}
   </select>
 
   <select id="findList" resultMap="BaseResultMap" >
